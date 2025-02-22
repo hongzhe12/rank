@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历投递排行榜</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1 class="main-title">简历投递排行榜</h1>
+        <div class="update-info">
+            <span class="update-time" id="currentTime">更新时间：{{ update_time }}</span>
+            <button onclick="refreshData()" class="refresh-btn">
+                <span class="refresh-icon">🔄</span> 刷新
+            </button>
+        </div>
+    <div class="tabs">
+        {% for ranking in rankings %}
+            <button class="tab-button {% if loop.index == 1 %}active{% endif %}" 
+                    onclick="showRanking({{ loop.index - 1 }})">
+                {{ ranking.title }}
+            </button>
+        {% endfor %}
+    </div>
+
+    <div class="rankings-container">
+        {% for ranking in rankings %}
+            <div class="ranking-container {% if loop.index == 1 %}active{% endif %}">
+                <h2 class="ranking-title">{{ ranking.title }}</h2>
+                <ul class="ranking-list">
+                    {% for item in ranking.list %}
+                        <li class="ranking-item">
+                            <span class="ranking-position">{{ loop.index }}</span>
+                            <div class="avatar">
+                                <img src="{{ item.avatar }}" alt="{{ item.name }}的头像">
+                            </div>
+                            <div class="user-info">
+                                <span class="ranking-name">{{ item.name }}</span>
+                                <div class="ranking-stats">
+                                    <span class="trend-indicator {% if item.trend > 0 %}up{% elif item.trend < 0 %}down{% endif %}">
+                                        {% if item.trend > 0 %}↑{% elif item.trend < 0 %}↓{% endif %}
+                                    </span>
+                                    <span class="ranking-value">{{ item.value }}</span>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+    
+    <script>
+        // 确保 DOM 加载完成后再执行
+        document.addEventListener('DOMContentLoaded', function() {
+            window.showRanking = function(index) {
+                // 隐藏所有榜单
+                document.querySelectorAll('.ranking-container').forEach(container => {
+                    container.classList.remove('active');
+                });
+                // 取消所有标签页的激活状态
+                document.querySelectorAll('.tab-button').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                // 显示选中的榜单
+                document.querySelectorAll('.ranking-container')[index].classList.add('active');
+                // 激活对应的标签页
+                document.querySelectorAll('.tab-button')[index].classList.add('active');
+            }
+        });
+    </script>
+    <script>
+        // 添加刷新功能
+        function refreshData() {
+            location.reload();
+        }
+    </script>
+    <script>
+        // 更新时间显示
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.getFullYear() + '-' + 
+                             String(now.getMonth() + 1).padStart(2, '0') + '-' +
+                             String(now.getDate()).padStart(2, '0') + ' ' +
+                             String(now.getHours()).padStart(2, '0') + ':' +
+                             String(now.getMinutes()).padStart(2, '0') + ':' +
+                             String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('currentTime').textContent = '更新时间：' + timeString;
+        }
+
+        // 每秒更新一次时间
+        setInterval(updateTime, 1000);
+        updateTime(); // 立即更新一次
+    </script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+/* 整体容器样式 */
+.rankings-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+/* 添加背景图片样式 */
+body {
+    background-image: url('../images/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    background-attachment: fixed;
+    filter: blur(5px);
+    z-index: -1;
+}
+
+/* 调整容器样式以适应背景 */
+.rankings-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px auto;
+}
+
+.ranking-container {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* 调整标签页样式使其更突出 */
+.tabs button{
+    color: rgba(255, 255, 255, 0.95);
+
+}
+
+
+/* 调整主标题样式使其在背景上更清晰 */
+.main-title {
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+/* 添加主标题样式 */
+.main-title {
+    text-align: center;
+    color: #333;
+    margin: 20px 0;
+    font-size: 24px;
+}
+
+/* 修改标签页样式使其更符合简历系统风格 */
+.tab-button {
+    color: #333;
+}
+
+.tab-button.active {
+    color: #2196F3;
+}
+
+.tab-button.active::after {
+    background: #2196F3;
+}
+/* 榜单列表 */
+.ranking-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 榜单项目 */
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* 排名序号 */
+.ranking-position {
+  width: 24px;
+  height: 24px;
+  background: #f0f0f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+/* 前三名特殊样式 */
+.ranking-item:nth-child(1) .ranking-position {
+  background: #FFD700;
+  color: white;
+}
+
+.ranking-item:nth-child(2) .ranking-position {
+  background: #C0C0C0;
+  color: white;
+}
+
+.ranking-item:nth-child(3) .ranking-position {
+  background: #CD7F32;
+  color: white;
+}
+/* 更新信息样式 */
+.update-info {
+    text-align: center;
+    margin: 10px 0;
+    color: #fff;
+}
+
+.refresh-btn {
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.refresh-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* 趋势指标样式 */
+.trend-indicator {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+.trend-indicator.up {
+    color: #4CAF50;
+}
+
+.trend-indicator.down {
+    color: #F44336;
+}
+
+.ranking-stats {
+    display: flex;
+    align-items: center;
+}
+/* 头像样式 */
+.avatar {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 用户信息 */
+.user-info {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ranking-name {
+  font-weight: 500;
+  color: #333;
+}
+
+.ranking-value {
+  color: #666;
+  font-size: 14px;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .ranking-container {
+      width: 100%;
+  }
+}
+
+/* 添加标签页样式 */
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #eee;
+    padding: 0 20px;
+}
+
+.tab-button {
+    padding: 12px 24px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    color: #666;
+    cursor: pointer;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.tab-button.active {
+    color: #1a73e8;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #1a73e8;
+}
+/* 登录页面样式 */
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.login-form {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.login-btn {
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-btn:hover {
+    background: #1976D2;
+}
+/* 修改榜单容器样式 */
+.rankings-container {
+    max-width: 800px;  /* 改小一点，因为现在一次只显示一个榜单 */
+}
+
+.ranking-container {
+    width: 100%;
+    display: none;
+}
+
+.ranking-container.active {
+    display: block;
+}
+
+body > div.rankings-container > div.ranking-container.active > h2 {
+    text-align: center;
+}
+
+/* 消息提示样式 */
+.flash-message {
+  background: rgba(33, 150, 243, 0.1);
+  color: #2196F3;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+/* 修改登录按钮文本 */
+.login-btn {
+  min-width: 120px;
+}

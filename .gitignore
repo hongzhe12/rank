@@ -1,0 +1,4 @@
+inspectionProfiles
+.idea
+__pycache__
+*.db
