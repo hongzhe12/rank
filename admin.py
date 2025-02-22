@@ -1,6 +1,6 @@
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from models import db, User, RankingList, RankingItem
+from models import db, User, RankingList, RankingItem,RankingManager
 
 admin = Admin(name='排行榜管理系统', template_mode='bootstrap4')
 
@@ -18,6 +18,12 @@ class UserAdmin(ModelView):
     }
     column_searchable_list = ['name']
     column_filters = ['created_at', 'updated_at']
+    def after_model_change(self, form, model, is_created):
+        """在模型更改后触发"""
+        RankingManager.update_rankings()
+    def after_model_delete(self, model):
+        """在模型删除后触发"""
+        RankingManager.update_rankings()
 
 class RankingListAdmin(ModelView):
     column_list = ['title', 'unit', 'last_update']
@@ -28,16 +34,17 @@ class RankingListAdmin(ModelView):
     }
 
 class RankingItemAdmin(ModelView):
-    column_list = ['ranking_list', 'user', 'value', 'trend', 'rank', 'created_at']
+    # 修改显示列配置
+    column_list = ['ranking_list_id', 'user_id', 'value', 'trend', 'rank', 'created_at']
     column_labels = {
-        'ranking_list': '榜单',
-        'user': '用户',
+        'ranking_list_id': '榜单ID',
+        'user_id': '用户ID',
         'value': '数值',
         'trend': '趋势',
         'rank': '排名',
         'created_at': '创建时间'
     }
-    column_filters = ['ranking_list', 'user', 'rank']
+    column_filters = ['ranking_list_id', 'user_id', 'rank']
 
 def init_admin(app):
     admin.init_app(app)

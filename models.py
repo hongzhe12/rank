@@ -14,14 +14,9 @@ class User(db.Model):
     interview_count = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
-
-class RankingList(db.Model):
-    __tablename__ = 'ranking_lists'
     
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    unit = db.Column(db.String(10), nullable=False)
-    last_update = db.Column(db.DateTime, default=datetime.now)
+    # 修改关系定义
+    ranking_items = db.relationship('RankingItem', backref=db.backref('user_ref', lazy=True), lazy=True, cascade='all, delete-orphan')
 
 class RankingItem(db.Model):
     __tablename__ = 'ranking_items'
@@ -33,9 +28,19 @@ class RankingItem(db.Model):
     trend = db.Column(db.Integer, default=0)  # 1: 上升, 0: 不变, -1: 下降
     rank = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=datetime.now)
-
-    user = db.relationship('User', backref=db.backref('ranking_items', lazy=True))
-    ranking_list = db.relationship('RankingList', backref=db.backref('items', lazy=True))
+class RankingList(db.Model):
+    __tablename__ = 'ranking_lists'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    unit = db.Column(db.String(10), nullable=False)
+    last_update = db.Column(db.DateTime, default=datetime.now)
+    
+    # 只保留一个关系定义
+    items = db.relationship('RankingItem', backref='ranking_list', lazy=True)
+    # 删除这行，因为已经在 User 模型中定义了关系
+    # user = db.relationship('User', backref=db.backref('ranking_items', lazy=True))
+    # ranking_list = db.relationship('RankingList', backref=db.backref('items', lazy=True))
 
 class RankingManager:
     @staticmethod
@@ -87,13 +92,15 @@ class RankingManager:
         for ranking_list in RankingList.query.all():
             items = []
             for item in RankingItem.query.filter_by(ranking_list_id=ranking_list.id).order_by(RankingItem.rank).all():
-                items.append({
-                    'rank': item.rank,
-                    'name': item.user.name,
-                    'value': f'{item.value}{ranking_list.unit}',
-                    'avatar': item.user.avatar,
-                    'trend': item.trend
-                })
+                # 修改这里的引用
+                if item.user_ref:
+                    items.append({
+                        'rank': item.rank,
+                        'name': item.user_ref.name,
+                        'value': f'{item.value}{ranking_list.unit}',
+                        'avatar': item.user_ref.avatar,
+                        'trend': item.trend
+                    })
             rankings.append({
                 'title': ranking_list.title,
                 'list': items

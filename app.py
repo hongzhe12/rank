@@ -48,10 +48,14 @@ def update_user(name):
             user.avatar = data['avatar']
             
         db.session.commit()
+        
+        # 更新用户数据后立即刷新榜单
+        RankingManager.update_rankings()
+        
         return jsonify({'status': 'success', 'message': '用户数据更新成功'})
     except Exception as e:
         db.session.rollback()
-        print(f"Error: {str(e)}")  # 添加错误日志
+        print(f"Error: {str(e)}")
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 # 榜单刷新接口
