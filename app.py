@@ -1,11 +1,14 @@
 from flask import Flask, render_template, jsonify, request
 from models import db, RankingManager, RankingList, User
+from admin import init_admin
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rankings.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'your-secret-key'  # 添加密钥，admin需要
 
 db.init_app(app)
+init_admin(app)  # 初始化管理后台
 
 @app.route('/')
 def index():
